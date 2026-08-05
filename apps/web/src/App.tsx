@@ -1,147 +1,70 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
 import { Layout } from './components/layout/Layout';
 import { LoadingScreen } from './components/ui/LoadingScreen';
 
-// Pages publiques
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
-import RedirectPage from './pages/RedirectPage';
-
-// Pages protégées
-import DashboardPage from './pages/dashboard/DashboardPage';
-import LinksPage from './pages/links/LinksPage';
-import CreateLinkPage from './pages/links/CreateLinkPage';
-import LinkDetailsPage from './pages/links/LinkDetailsPage';
-import AnalyticsPage from './pages/analytics/AnalyticsPage';
-import EarningsPage from './pages/earnings/EarningsPage';
-import WithdrawalsPage from './pages/withdrawals/WithdrawalsPage';
-import ReferralsPage from './pages/referrals/ReferralsPage';
-import SettingsPage from './pages/settings/SettingsPage';
-import ProfilePage from './pages/settings/ProfilePage';
-import ApiKeysPage from './pages/settings/ApiKeysPage';
-import DomainsPage from './pages/domains/DomainsPage';
-
-// Admin
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminUsers from './pages/admin/AdminUsers';
-
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, isLoading } = useAuth();
-  
-  if (isLoading) return <LoadingScreen />;
-  if (!user) return <Navigate to="/login" replace />;
-  
-  return <>{children}</>;
+function HomePage() {
+  return (
+    <div style={{ textAlign: 'center', padding: 50 }}>
+      <h1 style={{ fontSize: 48, color: '#6366f1' }}>Peage</h1>
+      <p style={{ fontSize: 20, color: '#666' }}>URL Shortener with Monetization</p>
+      <div style={{ marginTop: 40 }}>
+        <a href="/dashboard" style={{ padding: '12px 30px', background: '#6366f1', color: 'white', borderRadius: 8, textDecoration: 'none', marginRight: 10 }}>Dashboard</a>
+        <a href="/login" style={{ padding: '12px 30px', border: '2px solid #6366f1', color: '#6366f1', borderRadius: 8, textDecoration: 'none' }}>Login</a>
+      </div>
+    </div>
+  );
 }
 
-function AdminRoute({ children }: { children: React.ReactNode }) {
-  const { user, isLoading } = useAuth();
-  
-  if (isLoading) return <LoadingScreen />;
-  if (!user || user.role !== 'admin') return <Navigate to="/dashboard" replace />;
-  
-  return <>{children}</>;
+function DashboardPage() {
+  return (
+    <Layout>
+      <h1>Dashboard</h1>
+      <p>Welcome to Peage! Your links and earnings will appear here.</p>
+    </Layout>
+  );
+}
+
+function LoginPage() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#f5f5f5' }}>
+      <div style={{ background: 'white', padding: 40, borderRadius: 12, width: 400 }}>
+        <h1 style={{ textAlign: 'center', color: '#6366f1' }}>Peage</h1>
+        <h2 style={{ textAlign: 'center' }}>Login</h2>
+        <input type="email" placeholder="Email" style={{ width: '100%', padding: 12, marginBottom: 10, borderRadius: 8, border: '1px solid #ddd' }} />
+        <input type="password" placeholder="Password" style={{ width: '100%', padding: 12, marginBottom: 10, borderRadius: 8, border: '1px solid #ddd' }} />
+        <button style={{ width: '100%', padding: 12, background: '#6366f1', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>Sign In</button>
+      </div>
+    </div>
+  );
+}
+
+function LinksPage() {
+  return <Layout><h1>My Links</h1><p>Your shortened links will appear here.</p></Layout>;
+}
+
+function AnalyticsPage() {
+  return <Layout><h1>Analytics</h1><p>Click statistics and charts.</p></Layout>;
+}
+
+function EarningsPage() {
+  return <Layout><h1>Earnings</h1><p>Your earnings and balance.</p></Layout>;
+}
+
+function SettingsPage() {
+  return <Layout><h1>Settings</h1><p>Account settings.</p></Layout>;
 }
 
 export default function App() {
   return (
     <Routes>
-      {/* Routes publiques */}
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/go/:code" element={<RedirectPage />} />
-      
-      {/* Routes protégées */}
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Layout><DashboardPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/links" element={
-        <ProtectedRoute>
-          <Layout><LinksPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/links/new" element={
-        <ProtectedRoute>
-          <Layout><CreateLinkPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/links/:id" element={
-        <ProtectedRoute>
-          <Layout><LinkDetailsPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/analytics" element={
-        <ProtectedRoute>
-          <Layout><AnalyticsPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/earnings" element={
-        <ProtectedRoute>
-          <Layout><EarningsPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/withdrawals" element={
-        <ProtectedRoute>
-          <Layout><WithdrawalsPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/referrals" element={
-        <ProtectedRoute>
-          <Layout><ReferralsPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/settings" element={
-        <ProtectedRoute>
-          <Layout><SettingsPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/settings/profile" element={
-        <ProtectedRoute>
-          <Layout><ProfilePage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/settings/api-keys" element={
-        <ProtectedRoute>
-          <Layout><ApiKeysPage /></Layout>
-        </ProtectedRoute>
-      } />
-      <Route path="/domains" element={
-        <ProtectedRoute>
-          <Layout><DomainsPage /></Layout>
-        </ProtectedRoute>
-      } />
-      
-      {/* Routes admin */}
-      <Route path="/admin" element={
-        <AdminRoute>
-          <Layout><AdminDashboard /></Layout>
-        </AdminRoute>
-      } />
-      <Route path="/admin/users" element={
-        <AdminRoute>
-          <Layout><AdminUsers /></Layout>
-        </AdminRoute>
-      } />
-      
-      {/* 404 */}
-      <Route path="*" element={
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <h1 className="text-6xl font-bold text-gray-300">404</h1>
-            <p className="text-xl text-gray-500 mt-4">Page not found</p>
-            <a href="/" className="text-indigo-500 hover:underline mt-4 inline-block">
-              Go back home
-            </a>
-          </div>
-        </div>
-      } />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/links" element={<LinksPage />} />
+      <Route path="/analytics" element={<AnalyticsPage />} />
+      <Route path="/earnings" element={<EarningsPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
