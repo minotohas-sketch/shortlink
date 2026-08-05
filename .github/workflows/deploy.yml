@@ -2,18 +2,14 @@ name: Deploy
 
 on:
   push:
-    branches:
-      - main
-      - staging
+    branches: [main, staging]
   workflow_dispatch:
     inputs:
       environment:
         description: 'Environment'
         required: true
         type: choice
-        options:
-          - staging
-          - production
+        options: [staging, production]
 
 permissions:
   contents: read
@@ -26,13 +22,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: 'pnpm'
-      
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint || true
       - run: pnpm typecheck || true
@@ -43,34 +36,19 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
-    
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: 'pnpm'
-      
       - run: pnpm install --frozen-lockfile
-      
       - name: Deploy API
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           workingDirectory: 'apps/api'
           environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
-      
-      - name: Deploy Redirect Worker
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          workingDirectory: 'workers/redirect-worker'
-          environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
-      
       - name: Health Check
-        run: |
-          sleep 15
-          curl -f ${{ secrets.API_URL }}/health || exit 1
+        run: sleep 15 && curl -f ${{ secrets.API_URL }}/health || exit 1
