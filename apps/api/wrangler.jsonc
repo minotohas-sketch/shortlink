@@ -18,16 +18,20 @@
       "name": "peage-api-staging",
       "vars": {
         "APP_ENV": "staging",
+        "APP_NAME": "Peage",
         "APP_URL": "https://staging.peage.io",
-        "API_URL": "https://api-staging.peage.io"
+        "API_URL": "https://api-staging.peage.io",
+        "LOG_LEVEL": "debug"
       }
     },
     "production": {
       "name": "peage-api-production",
       "vars": {
         "APP_ENV": "production",
+        "APP_NAME": "Peage",
         "APP_URL": "https://peage.io",
-        "API_URL": "https://api.peage.io"
+        "API_URL": "https://api.peage.io",
+        "LOG_LEVEL": "warn"
       }
     }
   }

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022"]
+  },
+  "include": ["apps/**/*.ts", "packages/**/*.ts", "workers/**/*.ts"],
+  "exclude": ["node_modules", "dist", ".turbo"]
+}
