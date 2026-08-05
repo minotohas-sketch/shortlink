@@ -36,11 +36,6 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
-    
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-    
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -51,16 +46,15 @@ jobs:
       
       - run: pnpm install --no-frozen-lockfile
       
-      - name: Install Wrangler
-        run: npm install -g wrangler
-      
       - name: Deploy API
-        working-directory: apps/api
-        run: |
-          echo "🚀 Deploying API..."
-          npx wrangler deploy --env ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: 'apps/api'
+          environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
       
       - name: Health Check
         run: |
-          sleep 15
-          curl -f ${{ secrets.API_URL }}/health || echo "⚠️ Health check failed (non bloquant)"
+          sleep 10
+          curl -f ${{ secrets.API_URL }}/health || echo "⚠️ Health check en attente..."
