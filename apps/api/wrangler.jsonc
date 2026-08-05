@@ -3,75 +3,8 @@
   "name": "peage-api",
   "main": "src/index.ts",
   "compatibility_date": "2024-12-01",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   
-  // ─── D1 Database ────────────────────────────────────
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "peage-db",
-      "database_id": "{{D1_DATABASE_ID}}",
-      "migrations_dir": "migrations"
-    }
-  ],
-  
-  // ─── KV Namespaces ──────────────────────────────────
-  "kv_namespaces": [
-    {
-      "binding": "CACHE",
-      "id": "{{KV_CACHE_ID}}"
-    },
-    {
-      "binding": "SESSIONS",
-      "id": "{{KV_SESSIONS_ID}}"
-    },
-    {
-      "binding": "RATE_LIMIT_KV",
-      "id": "{{KV_RATE_LIMIT_ID}}"
-    }
-  ],
-  
-  // ─── R2 Buckets ─────────────────────────────────────
-  "r2_buckets": [
-    {
-      "binding": "STORAGE",
-      "bucket_name": "peage-storage"
-    }
-  ],
-  
-  // ─── Queues ─────────────────────────────────────────
-  "queues": {
-    "producers": [
-      {
-        "binding": "EMAIL_QUEUE",
-        "queue": "email-queue"
-      },
-      {
-        "binding": "ANALYTICS_QUEUE",
-        "queue": "analytics-queue"
-      },
-      {
-        "binding": "PAYOUT_QUEUE",
-        "queue": "payout-queue"
-      },
-      {
-        "binding": "NOTIFICATION_QUEUE",
-        "queue": "notification-queue"
-      }
-    ],
-    "consumers": [
-      {
-        "queue": "email-queue",
-        "max_batch_size": 10,
-        "max_batch_timeout": 60,
-        "max_retries": 3
-      }
-    ]
-  },
-  
-  // ─── Environment Variables ──────────────────────────
   "vars": {
     "APP_ENV": "development",
     "APP_NAME": "Peage",
@@ -80,27 +13,13 @@
     "LOG_LEVEL": "info"
   },
   
-  // ─── Routes ─────────────────────────────────────────
-  "routes": [
-    {
-      "pattern": "api.peage.io/*",
-      "custom_domain": true
-    },
-    {
-      "pattern": "peage.io/api/*",
-      "custom_domain": true
-    }
-  ],
-  
-  // ─── Environments ───────────────────────────────────
   "env": {
     "staging": {
       "name": "peage-api-staging",
       "vars": {
         "APP_ENV": "staging",
         "APP_URL": "https://staging.peage.io",
-        "API_URL": "https://api-staging.peage.io",
-        "LOG_LEVEL": "debug"
+        "API_URL": "https://api-staging.peage.io"
       }
     },
     "production": {
@@ -108,30 +27,8 @@
       "vars": {
         "APP_ENV": "production",
         "APP_URL": "https://peage.io",
-        "API_URL": "https://api.peage.io",
-        "LOG_LEVEL": "warn"
+        "API_URL": "https://api.peage.io"
       }
     }
-  },
-  
-  // ─── Cron Triggers ──────────────────────────────────
-  "triggers": {
-    "crons": [
-      "0 0 * * *",     // Daily report at midnight
-      "0 0 * * 0",     // Weekly report Sunday midnight
-      "0 0 1 * *"      // Monthly report 1st of month
-    ]
-  },
-  
-  // ─── Build ──────────────────────────────────────────
-  "build": {
-    "command": "npm run build",
-    "cwd": "apps/api"
-  },
-  
-  // ─── Observability ──────────────────────────────────
-  "observability": {
-    "enabled": true,
-    "head_sampling_rate": 0.1
   }
 }
