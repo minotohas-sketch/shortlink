@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "peage-redirect",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+  
+  "kv_namespaces": [
+    {
+      "binding": "LINK_CACHE",
+      "id": "{{KV_CACHE_ID}}"
+    }
+  ],
+  
+  "queues": {
+    "producers": [
+      {
+        "binding": "CLICKS_QUEUE",
+        "queue": "analytics-queue"
+      }
+    ]
+  },
+  
+  "vars": {
+    "API_URL": "https://api.peage.io",
+    "INTERNAL_API_KEY": ""
+  },
+  
+  "routes": [
+    {
+      "pattern": "peage.io/go/*",
+      "custom_domain": true
+    },
+    {
+      "pattern": "*.peage.io/*",
+      "custom_domain": true
+    }
+  ],
+  
+  "env": {
+    "staging": {
+      "name": "peage-redirect-staging",
+      "vars": {
+        "API_URL": "https://api-staging.peage.io"
+      }
+    },
+    "production": {
+      "name": "peage-redirect-production",
+      "vars": {
+        "API_URL": "https://api.peage.io"
+      }
+    }
+  }
+}

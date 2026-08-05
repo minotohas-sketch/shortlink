@@ -1,0 +1,39 @@
+{
+  "name": "peage",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Modern URL Shortener with Monetization",
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:api": "turbo dev --filter=@peage/api",
+    "dev:web": "turbo dev --filter=@peage/web",
+    "build": "turbo build",
+    "deploy": "turbo deploy",
+    "deploy:staging": "turbo deploy -- --env staging",
+    "deploy:production": "turbo deploy -- --env production",
+    "test": "turbo test",
+    "test:coverage": "turbo test:coverage",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "db:generate": "turbo db:generate",
+    "db:migrate": "turbo db:migrate",
+    "db:studio": "turbo db:studio",
+    "db:seed": "turbo db:seed",
+    
+    "clean": "turbo clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "husky": "^9.0.0",
+    "prettier": "^3.3.0",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
