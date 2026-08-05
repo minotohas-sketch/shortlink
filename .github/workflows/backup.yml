@@ -1,0 +1,38 @@
+name: Backup
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Tous les jours à 3h UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup-db:
+    name: Backup Database
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+      
+      - run: pnpm install --frozen-lockfile
+      
+      - name: Backup D1 Database
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          command: d1 export peage-db --output ./backup-$(date +%Y%m%d).sql
+      
+      - name: Upload backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_id }}
+          path: ./backup-*.sql
+          retention-days: 30
