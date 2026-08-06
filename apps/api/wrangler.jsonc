@@ -30,7 +30,7 @@
         "APP_ENV": "production",
         "APP_NAME": "Peage",
         "APP_URL": "https://shortlink-7qt.pages.dev",
-        "API_URL": "https://api.peage.io",
+        "API_URL": "https://peage-api-production.maconthys.workers.dev",
         "LOG_LEVEL": "warn"
       }
     }
