@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
-  "name": "peage-api",
+  "name": "peage-api-production",
   "main": "src/index.ts",
   "compatibility_date": "2024-12-01",
   "compatibility_flags": ["nodejs_compat"],
@@ -9,14 +9,14 @@
     {
       "binding": "DB",
       "database_name": "peage-db",
-      "database_id": "{{D1_DATABASE_ID}}"
+      "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
     }
   ],
   
   "vars": {
     "APP_ENV": "development",
     "APP_NAME": "Peage",
-    "APP_URL": "https://peage.io",
+    "APP_URL": "https://shortlink-7qt.pages.dev",
     "API_URL": "https://api.peage.io",
     "LOG_LEVEL": "info"
   },
@@ -28,13 +28,13 @@
         {
           "binding": "DB",
           "database_name": "peage-db",
-          "database_id": "{{D1_DATABASE_ID}}"
+          "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
         }
       ],
       "vars": {
         "APP_ENV": "staging",
         "APP_NAME": "Peage",
-        "APP_URL": "https://staging.peage.io",
+        "APP_URL": "https://shortlink-7qt.pages.dev",
         "API_URL": "https://api-staging.peage.io",
         "LOG_LEVEL": "debug"
       }
