@@ -1,5 +1,4 @@
--- Migration générée à la main à partir de apps/api/src/modules/auth/auth.schema.ts
--- et apps/api/src/modules/links/links.schema.ts (les DEUX SEULS fichiers *.schema.ts
+-- Migration générée à la main à partir de apps/api/src/modules/auth/auth.schema.tst apps/api/src/modules/links/links.schema.ts (les DEUX SEULS fichiers *.schema.ts
 -- non vides du repo — voir drizzle.config.ts : schema: './src/modules/**/*.schema.ts').
 --
 -- Ce fichier était présent mais VIDE (0 octet) dans le repo original : en l'état,
