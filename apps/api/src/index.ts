@@ -4,6 +4,8 @@ import { Logger } from './core/logger';
 
 // ─── Route imports ─────────────────────────────────────
 import { healthRoutes } from './modules/health/health.routes';
+import { authRoutes } from './modules/auth/auth.routes';
+import { linksRoutes } from './modules/links/links.routes';
 
 const logger = new Logger('Main');
 
@@ -19,12 +21,16 @@ export default {
     
     // ─── Monter les routes ───────────────────────────
     app.route('/health', healthRoutes);
+    app.route('/api/auth', authRoutes);
+    app.route('/api/links', linksRoutes);
     
-    // TODO: Monter les autres modules
-    // app.route('/api/auth', authRoutes);
-    // app.route('/api/users', usersRoutes);
-    // app.route('/api/links', linksRoutes);
-    // etc.
+    // TODO: monter les modules restants au fur et à mesure qu'ils sont
+    // réellement implémentés (controller + routes + schema non vides) :
+    // usersRoutes, domainsRoutes, adminRoutes, adsRoutes, campaignsRoutes,
+    // earningsRoutes, notificationsRoutes, paymentsRoutes, referralsRoutes,
+    // reportsRoutes, webhooksRoutes, withdrawalsRoutes.
+    // Ces modules n'ont aujourd'hui qu'un *.service.ts : pas de controller/
+    // routes/schema, donc rien à monter tant qu'ils ne sont pas complétés.
     
     // ─── Log de démarrage ────────────────────────────
     logger.info('Request received', {

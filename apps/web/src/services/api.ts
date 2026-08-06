@@ -3,8 +3,13 @@ import { useAuth } from '../hooks/useAuth';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://api.peage.io';
 
+// BUG FIX: toutes les routes ci-dessous et dans useAuth.ts sont relatives
+// sans préfixe ('/auth/login', '/links', '/domains'...), mais l'API les
+// monte sous /api/* (voir apps/api/src/index.ts : app.route('/api/auth', ...)
+// et workers/redirect-worker qui appelle lui-même `${API_URL}/api/links/...`).
+// Sans le '/api' ici, chaque requête du front visait une route inexistante.
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: `${API_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
   },

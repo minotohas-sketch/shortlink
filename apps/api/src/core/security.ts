@@ -116,7 +116,12 @@ export class SecurityService {
       if (parts.length !== 3) return null;
       const [headerB64, payloadB64, signature] = parts!;
       const expectedSig = await this.hmacSign(`${headerB64}.${payloadB64}`);
-      if (signature !== expectedSig) return null;
+      // BUG FIX: comparaison de signature en `!==` (non timing-safe), alors
+      // que timingSafeEqual() existe déjà dans cette classe et est utilisée
+      // pour les mots de passe. Une comparaison naïve sort dès le premier
+      // octet différent, ce qui peut théoriquement fuiter des informations
+      // de timing sur la signature attendue.
+      if (!this.timingSafeEqual(signature!, expectedSig)) return null;
       const payload = JSON.parse(this.base64UrlDecode(payloadB64!));
       if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return null;
       return payload;

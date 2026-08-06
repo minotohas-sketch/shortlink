@@ -47,31 +47,12 @@ export function createApp() {
     },
   }));
   
-  app.get('/health', (c: Context) => {
-    return c.json({ status: 'ok', timestamp: new Date().toISOString(), environment: env.APP_ENV, version: '1.0.0' });
-  });
-  
-  app.get('/health/readiness', async (c: Context) => {
-    const checks: Record<string, boolean> = {};
-    const envBindings = c.env as any || {};
-    
-    try {
-      if (envBindings.D1) {
-        await envBindings.D1.prepare('SELECT 1').first();
-        checks.database = true;
-      } else { checks.database = false; }
-    } catch { checks.database = false; }
-    
-    try {
-      if (envBindings.CACHE) {
-        await envBindings.CACHE.get('health-check');
-        checks.cache = true;
-      } else { checks.cache = false; }
-    } catch { checks.cache = false; }
-    
-    const allHealthy = Object.values(checks).every(v => v);
-    return c.json({ status: allHealthy ? 'ready' : 'not_ready', checks, timestamp: new Date().toISOString() }, allHealthy ? 200 : (503 as any));
-  });
+  // Les endpoints /health, /health/readiness et /health/liveness sont
+  // servis par healthRoutes (modules/health), monté dans index.ts.
+  // Ils étaient auparavant définis ici ET dans healthRoutes : les deux
+  // s'enregistraient sur les mêmes chemins, ce qui masquait la version
+  // du module (plus complète : vérifie aussi R2 et les queues, pas
+  // seulement D1/CACHE). On garde une seule source de vérité.
   
   app.onError(errorHandler);
   

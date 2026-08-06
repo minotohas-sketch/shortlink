@@ -1,0 +1,11 @@
+-- Laissé intentionnellement vide pour l'instant.
+--
+-- Les modules earnings, withdrawals, ads (adCampaigns) et referrals définissent
+-- bien des tables Drizzle (earnings, withdrawals, ad_campaigns, referrals), mais
+-- CES DÉFINITIONS VIVENT DANS LEURS FICHIERS *.service.ts (ex: earnings.service.ts)
+-- ET NON DANS UN *.schema.ts. Or drizzle.config.ts ne scanne que
+-- './src/modules/**/*.schema.ts' : drizzle-kit ne les verra donc jamais tant
+-- qu'elles ne sont pas déplacées dans un fichier <module>.schema.ts.
+--
+-- Voir le rapport d'audit, section "Design" — Tables non migrables — pour le
+-- détail des 4 tables concernées et comment les déplacer proprement.

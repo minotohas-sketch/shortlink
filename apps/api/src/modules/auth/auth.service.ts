@@ -76,6 +76,12 @@ export async function login(input: LoginInput, ip?: string, userAgent?: string):
   if (!user) throw new UnauthorizedError('Invalid email or password', 'INVALID_CREDENTIALS');
   if (user.status === 'banned') throw new ForbiddenError('Account has been banned', 'ACCOUNT_BANNED');
   if (user.status === 'suspended') throw new ForbiddenError('Account has been suspended', 'ACCOUNT_SUSPENDED');
+  // BUG FIX: 'inactive' (= email non vérifié, statut par défaut à l'inscription)
+  // n'était pas bloqué ici : un compte jamais vérifié pouvait se connecter et
+  // obtenir des tokens valides, ce qui contournait entièrement la vérification
+  // d'email. refreshTokens() plus bas exige déjà strictement 'active' — ce
+  // check aligne login() sur la même règle.
+  if (user.status === 'inactive') throw new ForbiddenError('Please verify your email before logging in', 'ACCOUNT_NOT_VERIFIED');
   
   const isValid = await security.verifyPassword(input.password, user.passwordHash, user.passwordSalt);
   

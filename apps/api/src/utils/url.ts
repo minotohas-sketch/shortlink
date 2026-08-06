@@ -57,6 +57,16 @@ export function validateAndSanitizeUrl(input: string): string {
     throw new BadRequestError('This URL is not allowed', 'BLOCKED_URL');
   }
   
+  // BUG FIX: checkUrlSafety() existait déjà plus bas dans ce fichier (bloque
+  // 127.x/192.168.x/10.x/172.16.x et *.local/*.internal) mais n'était jamais
+  // appelée ici. BLOCKED_DOMAINS ci-dessus ne couvre que 3 adresses littérales
+  // ('127.0.0.1', '0.0.0.0', '[::1]') : sans cet appel, un lien pouvait être
+  // créé vers une IP privée (ex. http://192.168.1.1/admin).
+  const safety = checkUrlSafety(parsed.toString());
+  if (!safety.safe) {
+    throw new BadRequestError(safety.reason || 'This URL is not allowed', 'BLOCKED_URL');
+  }
+  
   // Vérifier la longueur maximale
   if (url.length > 2048) {
     throw new BadRequestError('URL is too long (max 2048 characters)', 'URL_TOO_LONG');
