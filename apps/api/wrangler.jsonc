@@ -1,21 +1,52 @@
 {
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
-  "name": "peage-api-production",
+  "name": "peage-api",
   "main": "src/index.ts",
   "compatibility_date": "2024-12-01",
   "compatibility_flags": ["nodejs_compat"],
   
+  // ─── Bindings Cloudflare ────────────────────────────
+  // Ce fichier ne déclarait AUCUN binding avant cette modif : c'est la
+  // cause directe de l'erreur "D1 binding required" au login/register.
+  // Remplace CHAQUE "REMPLACE_MOI_..." ci-dessous par l'ID réel de TA
+  // ressource Cloudflare — ces valeurs sont propres à ton compte, je ne
+  // peux pas les deviner. Commandes pour les créer/récupérer :
+  //
+  //   wrangler d1 create peage-db                → database_id
+  //   wrangler kv namespace create CACHE          → id
+  //   wrangler kv namespace create RATE_LIMIT_KV  → id
+  //   wrangler r2 bucket create peage-storage     → (le nom suffit)
+  //   wrangler queues create email-queue          → (le nom suffit)
+  //
+  // Seul `d1_databases` (D1) est bloquant pour signup/login. Les autres
+  // sont utilisés par d'autres routes (cache, rate-limit, avatars,
+  // emails) — à remplir quand tu en as besoin, sinon le code dégrade
+  // proprement (health/readiness les signale juste comme "error").
   "d1_databases": [
     {
-      "binding": "DB",
+      "binding": "D1",
       "database_name": "peage-db",
       "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
     }
-  ],  
+  ],
+ 
+  "kv_namespaces": [
+    { "binding": "CACHE", "id": "55ddfeeb5a674d9d848fef515911c8ae" },
+    { "binding": "RATE_LIMIT_KV", "id": "5b69a0cea79749f0ba7344c67da2803e" }
+  ],
+  "r2_buckets": [
+    { "binding": "STORAGE", "bucket_name": "peage-storage" }
+  ],
+  "queues": {
+    "producers": [
+      { "binding": "EMAIL_QUEUE", "queue": "email-queue" }
+    ]
+  },
+  
   "vars": {
     "APP_ENV": "development",
     "APP_NAME": "Peage",
-    "APP_URL": "https://shortlink-7qt.pages.dev",
+    "APP_URL": "https://peage.io",
     "API_URL": "https://api.peage.io",
     "LOG_LEVEL": "info"
   },
@@ -23,30 +54,16 @@
   "env": {
     "staging": {
       "name": "peage-api-staging",
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "peage-db",
-          "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
-        }
-      ],
       "vars": {
         "APP_ENV": "staging",
         "APP_NAME": "Peage",
-        "APP_URL": "https://shortlink-7qt.pages.dev",
+        "APP_URL": "https://staging.peage.io",
         "API_URL": "https://api-staging.peage.io",
         "LOG_LEVEL": "debug"
       }
     },
     "production": {
       "name": "peage-api-production",
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "peage-db",
-          "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
-        }
-      ],
       "vars": {
         "APP_ENV": "production",
         "APP_NAME": "Peage",

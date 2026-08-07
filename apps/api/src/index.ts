@@ -1,6 +1,7 @@
 import { createApp } from './core/app';
 import { Environment, validateEnv } from './core/env';
 import { Logger } from './core/logger';
+import { getDb } from './core/db';
 
 // ─── Route imports ─────────────────────────────────────
 import { healthRoutes } from './modules/health/health.routes';
@@ -15,6 +16,21 @@ export default {
     // Initialiser l'environnement validé
     const validatedEnv = validateEnv(env);
     Environment.init(validatedEnv);
+    
+    // BUG FIX: getDb() a un cache interne (dbInstance) pensé pour être
+    // amorcé UNE fois avec le binding D1 réel, puis réutilisé par tous les
+    // `getDb()` appelés sans argument dans les services (auth, links...).
+    // Rien n'appelait jamais getDb(d1Binding) nulle part : le tout premier
+    // appel (au sein de authService.register/login) tombait donc sur
+    // `throw new Error('D1 binding required for first initialization')`.
+    // Ceci suppose un binding nommé `D1` dans wrangler.jsonc (voir
+    // d1_databases) — c'est le nom déjà attendu par health.controller.ts.
+    const d1 = (env as any)?.D1;
+    if (!d1) {
+      logger.error('D1 binding missing — check wrangler.jsonc d1_databases and the Cloudflare dashboard bindings for this Worker');
+    } else {
+      getDb(d1);
+    }
     
     // Créer l'application
     const app = createApp();
@@ -47,6 +63,9 @@ export default {
     const validatedEnv = validateEnv(env);
     Environment.init(validatedEnv);
     
+    const d1 = (env as any)?.D1;
+    if (d1) getDb(d1);
+    
     logger.info('Scheduled task running', { cron: event.cron });
     
     switch (event.cron) {
@@ -68,6 +87,9 @@ export default {
   async queue(batch: MessageBatch<unknown>, env: unknown, ctx: ExecutionContext): Promise<void> {
     const validatedEnv = validateEnv(env);
     Environment.init(validatedEnv);
+    
+    const d1 = (env as any)?.D1;
+    if (d1) getDb(d1);
     
     logger.info('Processing queue batch', { 
       queue: batch.queue,
