@@ -19,9 +19,14 @@ interface AuthState {
   refreshToken: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  
+
   login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
-  register: (email: string, username: string, password: string, referralCode?: string) => Promise<void>;
+  register: (
+    email: string,
+    username: string,
+    password: string,
+    referralCode?: string
+  ) => Promise<void>;
   logout: () => void;
   refreshAuth: () => Promise<void>;
   setUser: (user: User) => void;
@@ -36,11 +41,16 @@ export const useAuth = create<AuthState>()(
       refreshToken: null,
       isLoading: true,
       isAuthenticated: false,
-      
+
       login: async (email, password, rememberMe = false) => {
-        const response = await api.post('/auth/login', { email, password, rememberMe });
-        const { user, tokens } = response.data;
-        
+        const response = await api.post('/auth/login', {
+          email,
+          password,
+          rememberMe,
+        });
+
+        const { user, tokens } = response.data.data;
+
         set({
           user,
           accessToken: tokens.accessToken,
@@ -49,16 +59,22 @@ export const useAuth = create<AuthState>()(
           isLoading: false,
         });
       },
-      
-      register: async (email, username, password, referralCode) => {
+
+      register: async (
+        email,
+        username,
+        password,
+        referralCode
+      ) => {
         const response = await api.post('/auth/register', {
           email,
           username,
           password,
           referralCode,
         });
-        const { user, tokens } = response.data;
-        
+
+        const { user, tokens } = response.data.data;
+
         set({
           user,
           accessToken: tokens.accessToken,
@@ -67,7 +83,7 @@ export const useAuth = create<AuthState>()(
           isLoading: false,
         });
       },
-      
+
       logout: () => {
         set({
           user: null,
@@ -77,24 +93,32 @@ export const useAuth = create<AuthState>()(
           isLoading: false,
         });
       },
-      
+
       refreshAuth: async () => {
         try {
           const { refreshToken } = get();
+
           if (!refreshToken) {
-            set({ isLoading: false });
+            set({
+              isLoading: false,
+            });
             return;
           }
-          
-          const response = await api.post('/auth/refresh', { refreshToken });
-          const { tokens } = response.data;
-          
+
+          const response = await api.post('/auth/refresh', {
+            refreshToken,
+          });
+
+          const { tokens } = response.data.data;
+
           set({
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
+            isAuthenticated: true,
             isLoading: false,
           });
-        } catch {
+
+        } catch (error) {
           set({
             user: null,
             accessToken: null,
@@ -104,13 +128,22 @@ export const useAuth = create<AuthState>()(
           });
         }
       },
-      
-      setUser: (user) => set({ user }),
-      
-      setTokens: (accessToken, refreshToken) => set({ accessToken, refreshToken }),
+
+      setUser: (user) =>
+        set({
+          user,
+        }),
+
+      setTokens: (accessToken, refreshToken) =>
+        set({
+          accessToken,
+          refreshToken,
+        }),
     }),
+
     {
       name: 'peage-auth',
+
       partialize: (state) => ({
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
