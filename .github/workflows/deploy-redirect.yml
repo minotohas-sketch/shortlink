@@ -25,10 +25,12 @@ jobs:
         with:
           node-version: 24
 
-      - name: Deploy to Cloudflare
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: workers/redirect-worker
-          command: deploy --env production
+      - name: Install Wrangler
+        run: npm install --global wrangler@4
+
+      - name: Deploy Redirect Worker
+        working-directory: workers/redirect-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: wrangler deploy --config wrangler.jsonc --env production
