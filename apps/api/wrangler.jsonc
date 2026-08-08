@@ -18,7 +18,7 @@
       "name": "peage-api-production",
       "d1_databases": [
         {
-          "binding": "DB",
+          "binding": "D1",
           "database_name": "peage-db",
           "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
         }
