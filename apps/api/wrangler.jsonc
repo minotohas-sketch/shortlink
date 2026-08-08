@@ -5,88 +5,33 @@
   "compatibility_date": "2024-12-01",
   "compatibility_flags": ["nodejs_compat"],
 
-  "d1_databases": [
-    {
-      "binding": "D1",
-      "database_name": "peage-db",
-      "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
-    }
-  ],
-
-  "kv_namespaces": [
-    {
-      "binding": "CACHE",
-      "id": "55ddfeeb5a674d9d848fef515911c8ae"
-    },
-    {
-      "binding": "RATE_LIMIT_KV",
-      "id": "5b69a0cea79749f0ba7344c67da2803e"
-    }
-  ],
-
- // "r2_buckets": [
-   // {
-    //  "binding": "STORAGE",
-     // "bucket_name": "peage-storage"
-  //  }
- // ],
-
-  "queues": {
-    "producers": [
-      {
-        "binding": "EMAIL_QUEUE",
-        "queue": "email-queue"
-      }
-    ]
-  },
-
   "vars": {
     "APP_ENV": "development",
     "APP_NAME": "Peage",
-    "APP_URL": "https://peage.io",
-    "API_URL": "https://api.peage.io",
+    "APP_URL": "https://shortlink-7qt.pages.dev",
+    "API_URL": "https://peage-api-production.maconthys.workers.dev",
     "LOG_LEVEL": "info"
   },
 
   "env": {
     "production": {
       "name": "peage-api-production",
-
       "d1_databases": [
         {
-          "binding": "D1",
+          "binding": "DB",
           "database_name": "peage-db",
           "database_id": "e83cb17e-7b6a-4a1c-b95f-68e68f1251c4"
         }
       ],
-
       "kv_namespaces": [
-        {
-          "binding": "CACHE",
-          "id": "55ddfeeb5a674d9d848fef515911c8ae"
-        },
-        {
-          "binding": "RATE_LIMIT_KV",
-          "id": "5b69a0cea79749f0ba7344c67da2803e"
-        }
+        { "binding": "CACHE", "id": "55ddfeeb5a674d9d848fef515911c8ae" },
+        { "binding": "RATE_LIMIT_KV", "id": "5b69a0cea79749f0ba7344c67da2803e" }
       ],
-
-      //"r2_buckets": [
-        //{
-          //"binding": "STORAGE",
-          //"bucket_name": "peage-storage"
-       // }
-      //],
-
       "queues": {
         "producers": [
-          {
-            "binding": "EMAIL_QUEUE",
-            "queue": "email-queue"
-          }
+          { "binding": "EMAIL_QUEUE", "queue": "email-queue" }
         ]
       },
-
       "vars": {
         "APP_ENV": "production",
         "APP_NAME": "Peage",
