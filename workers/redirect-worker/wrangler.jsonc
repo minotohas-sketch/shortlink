@@ -4,39 +4,55 @@
   "main": "src/index.ts",
   "compatibility_date": "2024-12-01",
   "compatibility_flags": ["nodejs_compat"],
-  
-  "kv_namespaces": [
-    {
-      "binding": "LINK_CACHE",
-      "id": "55ddfeeb5a674d9d848fef515911c8ae"
-    }
-  ],
-  
-  "queues": {
-    "producers": [
-      {
-        "binding": "CLICKS_QUEUE",
-        "queue": "analytics-queue"
-      }
-    ]
-  },
-  
-  "vars": {
-    "API_URL": "https://peage-api-production.maconthys.workers.dev",
-    "INTERNAL_API_KEY": ""
-  },
-  
+
   "env": {
     "staging": {
       "name": "peage-redirect-staging",
+
+      "kv_namespaces": [
+        {
+          "binding": "LINK_CACHE",
+          "id": "55ddfeeb5a674d9d848fef515911c8ae"
+        }
+      ],
+
+      "queues": {
+        "producers": [
+          {
+            "binding": "CLICKS_QUEUE",
+            "queue": "analytics-queue"
+          }
+        ]
+      },
+
       "vars": {
-        "API_URL": "https://peage-api-production.maconthys.workers.dev"
+        "API_URL": "https://peage-api-production.maconthys.workers.dev",
+        "INTERNAL_API_KEY": ""
       }
     },
+
     "production": {
       "name": "peage-redirect-production",
+
+      "kv_namespaces": [
+        {
+          "binding": "LINK_CACHE",
+          "id": "55ddfeeb5a674d9d848fef515911c8ae"
+        }
+      ],
+
+      "queues": {
+        "producers": [
+          {
+            "binding": "CLICKS_QUEUE",
+            "queue": "analytics-queue"
+          }
+        ]
+      },
+
       "vars": {
-        "API_URL": "https://peage-api-production.maconthys.workers.dev"
+        "API_URL": "https://peage-api-production.maconthys.workers.dev",
+        "INTERNAL_API_KEY": ""
       }
     }
   }
