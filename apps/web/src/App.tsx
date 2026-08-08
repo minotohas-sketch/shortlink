@@ -35,7 +35,6 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const { refreshAuth } = useAuth();
-
   useEffect(() => { refreshAuth(); }, []);
 
   return (
