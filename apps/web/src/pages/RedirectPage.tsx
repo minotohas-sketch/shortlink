@@ -8,7 +8,7 @@ export default function RedirectPage() {
   useEffect(() => {
     if (code) {
       // Rediriger via le worker de redirection
-      window.location.href = `${window.location.origin}/go/${code}`;
+      window.location.href = `https://peage-redirect-production.maconthys.workers.dev/go/${code}`;
       
       // Si la redirection échoue après 5 secondes
       const timeout = setTimeout(() => setError(true), 5000);
