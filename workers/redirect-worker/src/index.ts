@@ -26,7 +26,7 @@ export default {
     const shortCode = url.pathname.split('/').pop() || '';
     
     if (!shortCode || shortCode.length < 3) {
-      return Response.redirect('https://peage.io', 302);
+      return Response.redirect('https://shortlink-7qt.pages.dev', 302);
     }
     
     try {
@@ -46,7 +46,7 @@ export default {
       });
       
       if (!apiResponse.ok) {
-        return Response.redirect('https://peage.io/404', 302);
+        return Response.redirect('https://shortlink-7qt.pages.dev/404', 302);
       }
       
       const linkData = await apiResponse.json<LinkData>();
@@ -59,7 +59,7 @@ export default {
       return handleRedirect(linkData, request, env);
     } catch (error) {
       logger.error('Redirect failed', error, { shortCode });
-      return Response.redirect('https://peage.io/error', 302);
+      return Response.redirect('https://shortlink-7qt.pages.dev/error', 302);
     }
   },
 };
@@ -71,17 +71,17 @@ async function handleRedirect(
 ): Promise<Response> {
   // Vérifier le statut
   if (link.status !== 'active') {
-    return Response.redirect('https://peage.io/expired', 302);
+    return Response.redirect('https://shortlink-7qt.pages.dev/expired', 302);
   }
   
   // Vérifier l'expiration
   if (link.expiresAt && new Date(link.expiresAt) < new Date()) {
-    return Response.redirect('https://peage.io/expired', 302);
+    return Response.redirect('https://shortlink-7qt.pages.dev/expired', 302);
   }
   
   // Vérifier le max clicks
   if (link.maxClicks && link.currentClicks >= link.maxClicks) {
-    return Response.redirect('https://peage.io/expired', 302);
+    return Response.redirect('https://shortlink-7qt.pages.dev/expired', 302);
   }
   
   // Vérifier le mot de passe

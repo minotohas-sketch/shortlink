@@ -8,7 +8,7 @@
   "kv_namespaces": [
     {
       "binding": "LINK_CACHE",
-      "id": "{{KV_CACHE_ID}}"
+      "id": "55ddfeeb5a674d9d848fef515911c8ae"
     }
   ],
   
@@ -22,32 +22,21 @@
   },
   
   "vars": {
-    "API_URL": "https://api.peage.io",
+    "API_URL": "https://peage-api-production.maconthys.workers.dev",
     "INTERNAL_API_KEY": ""
   },
-  
-  "routes": [
-    {
-      "pattern": "peage.io/go/*",
-      "custom_domain": true
-    },
-    {
-      "pattern": "*.peage.io/*",
-      "custom_domain": true
-    }
-  ],
   
   "env": {
     "staging": {
       "name": "peage-redirect-staging",
       "vars": {
-        "API_URL": "https://api-staging.peage.io"
+        "API_URL": "https://peage-api-production.maconthys.workers.dev"
       }
     },
     "production": {
       "name": "peage-redirect-production",
       "vars": {
-        "API_URL": "https://api.peage.io"
+        "API_URL": "https://peage-api-production.maconthys.workers.dev"
       }
     }
   }
