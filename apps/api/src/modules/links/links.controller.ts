@@ -50,7 +50,7 @@ export async function redirectLink(c: Context): Promise<Response> {
     return c.redirect(link.originalUrl, 302);
   } catch (error) {
     logger.error('Redirect failed', error, { shortCode });
-    return c.redirect('https://peage.io/404', 302);
+    return c.redirect('https://shortlink-7qt.pages.dev/404', 302);
   }
 }
 

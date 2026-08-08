@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://api.peage.io';
+const API_URL = import.meta.env.VITE_API_URL || 'https://peage-api-production.maconthys.workers.dev';
 
 // BUG FIX: toutes les routes ci-dessous et dans useAuth.ts sont relatives
 // sans préfixe ('/auth/login', '/links', '/domains'...), mais l'API les

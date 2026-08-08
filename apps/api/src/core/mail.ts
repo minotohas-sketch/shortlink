@@ -176,7 +176,7 @@ export class MailService {
           Your account has been created successfully. Start shortening links and earning money!
         </p>
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${data.dashboardUrl || 'https://peage.io/dashboard'}" 
+          <a href="${data.dashboardUrl || 'https://shortlink-7qt.pages.dev/dashboard'}" 
              style="background: #6366f1; color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">
             Go to Dashboard
           </a>
@@ -278,7 +278,7 @@ export class MailService {
           You just earned <strong>$${data.amount?.toFixed(2)}</strong> from <strong>${data.source}</strong>!
         </p>
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${data.dashboardUrl || 'https://peage.io/dashboard'}" 
+          <a href="${data.dashboardUrl || 'https://shortlink-7qt.pages.dev/dashboard'}" 
              style="background: #6366f1; color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 600;">
             View Dashboard
           </a>

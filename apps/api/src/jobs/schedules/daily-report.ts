@@ -131,7 +131,7 @@ function generateDailyReportHtml(
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
-        <a href="https://peage.io/dashboard" 
+        <a href="https://shortlink-7qt.pages.dev/dashboard" 
            style="background: #6366f1; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: 600;">
           View Full Dashboard
         </a>
@@ -139,7 +139,7 @@ function generateDailyReportHtml(
       
       <p style="color: #9ca3af; font-size: 12px; text-align: center;">
         You're receiving this because you have an active Peage account.
-        <br><a href="https://peage.io/settings/notifications" style="color: #6366f1;">Manage notifications</a>
+        <br><a href="https://shortlink-7qt.pages.dev/settings/notifications" style="color: #6366f1;">Manage notifications</a>
       </p>
     </body>
     </html>
