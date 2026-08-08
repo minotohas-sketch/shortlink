@@ -123,7 +123,7 @@ export async function hashPassword(
     {
       name: 'PBKDF2',
       salt: encoder.encode(actualSalt),
-      iterations: 600000,
+      iterations: 100000,
       hash: 'SHA-256',
     },
     key,
