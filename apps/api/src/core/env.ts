@@ -3,8 +3,8 @@ import { z } from 'zod';
 const envSchema = z.object({
   APP_ENV: z.enum(['development', 'staging', 'production']).default('production'),
   APP_NAME: z.string().default('Peage'),
-  APP_URL: z.string().default('https://peage.io'),
-  API_URL: z.string().default('https://api.peage.io'),
+  APP_URL: z.string().default('https://shortlink-7qt.pages.dev'),
+  API_URL: z.string().default('https://peage-api-production.maconthys.workers.dev'),
   JWT_SECRET: z.string().default('dev-secret-32-chars-minimum-required!!'),
   JWT_REFRESH_SECRET: z.string().default('dev-refresh-secret-32-chars-minimum!!'),
   ENCRYPTION_KEY: z.string().default('dev-encryption-key-32-chars-here!'),
